@@ -1,0 +1,106 @@
+<html>
+    <head>
+        <title>Form Test Index</title>
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+    </head>
+    <style>
+    .error {
+      color:red;
+      margin-left: 200px;
+    }
+    .green {
+      color: green;
+    }
+    .btn {
+      margin-top: 15px;
+    }
+    h1 {
+      margin-left: 50px;
+    }
+    </style>
+    <body>
+      <body background="{{ url_for('static', filename='seigaiha.png') }}"> 
+        {% if 'NonEmptyFields' in error_messages %}
+        <p class = 'error'> {{error_messages['NonEmptyFields']}} </p>
+        {% endif %}
+        {% if 'TwoCharacters' in error_messages %}
+            <p class = 'error'> {{error_messages['TwoCharacters']}} </p>
+        {% endif %}
+        {% if 'OnlyAlphabets' in error_messages %}
+          <p class = 'error'> {{error_messages['OnlyAlphabets']}} </p>
+        {% endif %}
+        <form action='/users' method='post' class = "form-horizontal">
+          <h1>Registration Form</h1>
+          <div class = "form-group">
+            <label for ="first_name" class="col-sm-2 control-label">First Name:</label>
+            <div class = "col-sm-6">
+              <input type='text' class = "form-control" name='first_name' id = "first_name" placeholder = "First Name"> 
+            </div>
+          </div>
+          <div class = "form-group">
+            <label for = "last_name" class = "col-sm-2 control-label">Last Name:</label>
+            <div class = "col-sm-6">
+              <input type='text' name='last_name' class = "form-control" id = "last_name" placeholder = "Last Name">
+            </div>
+          </div>
+        {% if 'EmailDuplicate' in error_messages %}
+          <p class = 'error'> {{error_messages['EmailDuplicate']}} </p>
+        {% endif %}
+        {% if 'InvalidEmail' in error_messages %}
+        <p class = 'error'> {{error_messages['InvalidEmail']}} </p>
+        {% endif %}
+        <div class = "form-group">
+          <label for = "email" class = "col-sm-2 control-label">Email:</label>
+          <div class = "col-sm-6">
+            <input type='text' name='email' class = "form-control" id = "email" placeholder = "Email">
+          </div>
+        </div>
+        {% if 'EightCharacters' in error_messages %}
+        <p class = 'error'> {{error_messages['EightCharacters']}} </p>
+        {% endif %}
+        {% if 'InvalidPassword' in error_messages %}
+        <p class = 'error'> {{error_messages['InvalidPassword']}} </p>
+        {% endif %}
+        <div class = "form-group">
+          <label for = "password" class = "col-sm-2 control-label">Password:</label>
+          <div class = "col-sm-6">
+            <input type='password' name='password' class = "form-control" id = "password" placeholder = "Password">
+          </div>
+        </div>
+        {% if 'ConfirmPassword' in error_messages %}
+        <p class = 'error'> {{error_messages['ConfirmPassword']}} </p>
+        {% endif %}
+        <div class = "form-group">
+          <label for = "confirmpassword" class = "col-sm-2 control-label">Confirm Password:</label>
+          <div class = "col-sm-6">
+            <input type='password' name='confirm_password' class = "form-control" id = "confirmpassword"placeholder = "Password">
+            <input type='submit' value='Create User' class = "btn btn-primary">
+          </div>
+        </div>
+        </form>
+
+        {% if 'NoEmail' in login_error %}
+        <p class = 'error'> {{login_error['NoEmail']}} </p>
+        {% endif %}
+        <form action='/login' method='post' class = "form-horizontal">
+          <h1> Login </h1>
+          <div class = "form-group">
+            <label for = "email" class = "col-sm-2 control-label">Email:</label>
+            <div class = "col-sm-6">
+              <input type ='text' name ='email' id = "email" class = "form-control" placeholder = "Email">
+            </div>
+          </div>
+        {% if 'IncorrectLogin' in login_error %}
+        <p class = 'error'> {{login_error['IncorrectLogin']}} </p>
+        {% endif %}
+          <div class = "form-group">
+            <label for = "password" class = "col-sm-2 control-label">Password:</label>
+            <div class = "col-sm-6">
+              <input type='password' name='password' id = "password" class = "form-control" placeholder = "Password">
+              <input type='submit' value='Login' class = "btn btn-primary last-btn">
+            </div>
+          </div>
+        </form>
+    </body>
+</html>

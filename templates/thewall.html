@@ -1,0 +1,111 @@
+<html>
+<head>
+	<title>The Wall</title>
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+</head>
+	<style>
+	body {
+		text-align: center;
+	}
+	.form-control {
+		margin-bottom: 15px;
+	}
+	h1 {
+		color: rgb(255, 123, 0);
+		font-weight: 700;
+		font-size: 50px;
+	}
+	p {
+		color: rgb(12, 0, 147);
+	}
+	.container {
+		text-align: left;
+	}
+	.logout {
+		text-align: right;
+		margin-right: 100px;
+	}
+	.message {
+		font-size: 18px;
+		font-weight: bold;
+		margin: 0px;
+		color: rgb(255, 42, 0);
+	}
+	.message1 {
+		font-size: 16px;
+		margin-top: 0px;
+		margin-bottom: 10px;
+		color: rgb(0, 7, 84);
+	}
+	.comment,
+	.comment1 {
+		margin-left: 50px;
+		
+	}
+	.comment {
+		font-weight: bold;
+		font-size: 16px;
+		margin-bottom: 0px;
+		color: rgb(255, 42, 0);
+	}
+	.comment1 {
+		font-size: 14px;
+		margin-top: 0px;
+		margin-bottom: 10px;
+		color: rgb(0, 7, 84);
+	}
+	.comment-btn {
+		margin-left: 50px;
+	}
+	</style>
+<body>
+	<body background="{{ url_for('static', filename='weather.png') }}">
+	<h1> The Weather Wall </h1>
+
+	<div class = "container">
+		<div class = "row">
+			<div class = "col-sm-8 col-sm-offset-2">
+				<form action='/postmessage' method='POST'>
+					<textarea class = "form-control" rows = "3" name = "message"></textarea>
+				    <input type="submit" class = "btn btn-success" value="Message">
+			  	</form>
+	  		</div>
+	  	</div>
+ 	</div>
+
+ 	<div class = "container">
+ 		<div class = "row">
+ 			<div class = "col-sm-8 col-sm-offset-2">
+			  	{% for message in all_messages: %}
+			   <p class = "message">{{ message['first_name'] }} {{ message['last_name'] }} {{ message['created_time'] }}</p>
+			   <p class = "message1">{{ message['message']}}</p>
+			   		{% if message['user_id'] == session['login'] %}
+				   <form action = "/delete/{{ message['id'] }}" method = 'POST'>
+				   	 	<input type="submit" class = "btn btn-danger" value="Delete Message">
+				   </form>
+			   		{% endif %}
+			   	{% for comment in all_comments: %}
+		   		{% if comment['message_id'] == message['id'] %}
+	   			<p class= "comment"> {{ comment['first_name'] }} {{ comment['last_name'] }} {{ comment['comment_time'] }} </p>
+			   	<p class = "comment1"> {{ comment['comment']}} </p>
+			   	{% if comment['user_id'] == session['login'] %}
+				   	<form action = "/deletecomment/{{ comment['id'] }}" method = 'POST'>
+				   	 	<input type="submit" value="Delete Comment" class = "btn btn-danger comment-btn">
+				   	</form>
+			   	{% endif %}
+			   	{% endif %}
+			   	{% endfor %}
+			   	<form action='/postcomment/{{message['id']}}' method='POST'>
+					<textarea rows = "3" class = "form-control" name = "comment"></textarea>
+				    <input type="submit" value="Comment" class = "btn btn-warning">
+		  		</form>
+				{% endfor %}
+			</div>
+		</div>
+	</div>
+	<form action = '/logout' method = 'POST' class = "logout">
+		<input type = "submit" value = "logout" class = "btn btn-primary">
+	</form>
+</body>
+</html>
